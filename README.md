@@ -8,10 +8,12 @@ Until everything is implemented, the case classes are a unorganized and their na
 All responses returns Either the parsed JSON wrapped in a neat Case Class or an Error-object which represents the meta response from Instagram (or a parsing error).
 
 ## Implementation status
+
 ### Implemented
  * Get basic information about a user.
  * Search for a user by name.
  * Get information about a media object.
+
 ### Not yet implemented
  * See the authenticated user's feed.
  * Get the most recent media published by a user.
