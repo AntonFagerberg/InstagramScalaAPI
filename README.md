@@ -7,6 +7,20 @@ Until everything is implemented, the case classes are a unorganized and their na
 
 All responses returns Either the parsed JSON wrapped in a neat Case Class or an Error-object which represents the meta response from Instagram (or a parsing error).
 
+## Installation
+You can use SBT to download dependencies and run the Demo-file:
+
+```bash
+sbt run
+```
+
+### Dependencies
+The current dependencies I use are:
+```bash
+"net.liftweb" %% "lift-json" % "2.5-M4"
+"org.scalaj" %% "scalaj-http" % "0.3.7"
+```
+
 ## Implementation status
 
 ### Implemented
@@ -41,10 +55,7 @@ All responses returns Either the parsed JSON wrapped in a neat Case Class or an 
 
  ## OAuth
  Note that Instagram uses OAuth 2.0 and this library does not implement it yet. I might decide not to implement it at all in to this code since it is pretty straight forward and since scalaj-http already implements OAuth.
- 
+
  To create an instance of the Instagram-object, you need the OAuth access token.
 
  You can read more about the authentication at: http://instagram.com/developer/authentication/
-
- ## Installation / SBT / JARs
- More of this to come...
