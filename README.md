@@ -1,18 +1,23 @@
 # Instagram API written in Scala.
-I'm currently implementing everything in the Instagram API. To see which features I've implemented so far, see the list below.
+Is it a Scala implementation of the Instagram API. Not all features are implemented yet, check the list below to see which features are implemented or not.
 
 This project uses scalaj-http to send HTTP-requests and lift-json to parse the JSON response as case classes.
 
-Until everything is implemented, the case classes are a unorganized and their names might change when I get a better grip of the relation between the results and how I might reuse them.
+Note that you require a users access token to use this library. The support for use of client id instead is not yet implemented.
 
-All responses returns Either the parsed JSON wrapped in a neat Case Class or an Error-object which represents the meta response from Instagram (or a parsing error).
+A Response object is returned from all methods and it contains:
+ * Data - the stuff you actually want. This is the JSON response parsed as a corresponding object.
+ * Pagination - if a large result set is retrieved, this object contains what you need to fetch the next "page" with information. You can pass the relevant pieces of this information to the same method as called before as optional parameters.
+ * Meta - contains the status from Instagram (like 200 OK, 400 error). Internal errors such as parsing or socket errors will be stored in this meta object as well.
 
-## Installation
-You can use SBT to download dependencies and run the Demo-file:
+## Installation & Demo
+You can use SBT to download the required dependencies and run the Demo-file:
 
 ```bash
 sbt run
 ```
+
+The demo-file contains all implemented methods but you need to uncomment some of them to try them (to avoid spamming the Instagram servers).
 
 ### Dependencies
 The current dependencies I use are:
@@ -27,34 +32,38 @@ The current dependencies I use are:
  * Get basic information about a user.
  * Search for a user by name.
  * Get information about a media object.
-
-### Not yet implemented
  * See the authenticated user's feed.
  * Get the most recent media published by a user.
  * See the authenticated user's list of liked media.
  * Get the list of users this user follows.
  * Get the list of users this user is followed by.
- * List the users who have requested to follow.
- * Get information about a relationship to another user.
- * Modify the relationship with target user.
- * Search for media in a given area. The default time span is set to 5 days. The time span must not exceed 7 days. Defaults time stamps cover the last 5 days.
  * Get a list of currently popular media.
  * Get a full list of comments on a media.
- * Create a comment on a media. Please email apidevelopers[at]instagram.com for access.
- * Remove a comment.
  * Get a list of users who have liked this media.
- * Set a like on this media by the current user.
- * Remove a like on this media by the current user.
  * Get information about a tag object.
  * Get a list of recently tagged media.
  * Search for tags by name.
  * Get information about a location.
- * Get a list of media objects from a given location.
  * Search for a location by geographic coordinate.
+ * Get a list of media objects from a given location.
+ * Token support.
+
+### Not yet implemented
+ * List the users who have requested to follow.
+ * Get information about a relationship to another user.
+ * Modify the relationship with target user.
+ * Search for media in a given area. The default time span is set to 5 days. The time span must not exceed 7 days. Defaults time stamps cover the last 5 days.
+ * Create a comment on a media. Please email apidevelopers[at]instagram.com for access.
+ * Remove a comment.
+ * Set a like on this media by the current user.
+ * Remove a like on this media by the current user.
  * Get recent media from a geography subscription.
+ * OAuth 2.0
+ * Client ID support (only token is used currently).
+ * Pagination
 
  ## OAuth
- Note that Instagram uses OAuth 2.0 and this library does not implement it yet. I might decide not to implement it at all in to this code since it is pretty straight forward and since scalaj-http already implements OAuth.
+ Note that Instagram uses OAuth 2.0 and this library does not implement it yet. The approach to do this is pretty straight forward and scalaj-http has implemented OAuth helper methods.
 
  To create an instance of the Instagram-object, you need the OAuth access token.
 
