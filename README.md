@@ -47,6 +47,8 @@ The current dependencies I use are:
  * Search for a location by geographic coordinate.
  * Get a list of media objects from a given location.
  * Token support.
+ * Client ID support.
+ * Pagination.
 
 ### Not yet implemented
  * List the users who have requested to follow.
@@ -59,8 +61,6 @@ The current dependencies I use are:
  * Remove a like on this media by the current user.
  * Get recent media from a geography subscription.
  * OAuth 2.0
- * Client ID support (only token is used currently).
- * Pagination
 
  ## OAuth
  Note that Instagram uses OAuth 2.0 and this library does not implement it yet. The approach to do this is pretty straight forward and scalaj-http has implemented OAuth helper methods.

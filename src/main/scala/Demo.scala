@@ -1,6 +1,6 @@
 object Demo {
   def main(args: Array[String]) {
-    val instagram = new Instagram(accessToken = "Put the secret access token here - see: http://instagram.com/developer/authentication/")
+    val instagram = new Instagram(accessTokenOrClientId = "Put either Left('accessToken') or Right('clientId') from Instagram here.")
 
     println("Here is some stuff you can do:")
 
