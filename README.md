@@ -19,6 +19,15 @@ sbt run
 
 The demo-file contains all implemented methods but you need to uncomment some of them to try them (to avoid spamming the com.antonfagerberg.instagram.Instagram servers). You need to get a client id (and optionally an access token) before running the examples.
 
+## Adding to your project
+Simply run:
+
+```bash
+sbt package
+```
+
+To create a Jar-file. However, you need to add the dependencies below to your project manually!
+
 ### Dependencies
 The current dependencies I use are:
 ```bash
