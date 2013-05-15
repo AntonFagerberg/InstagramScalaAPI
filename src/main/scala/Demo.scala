@@ -1,8 +1,26 @@
 object Demo {
   def main(args: Array[String]) {
-    val instagram = new Instagram(accessTokenOrClientId = "Put either Left('accessToken') or Right('clientId') from Instagram here.")
+//    You need to request these variables from Instagram: www.instagram.com/developer
+//    val clientId = "client-id"
+//    val clientSecret = "client-secret"
+//    val redirectURI = "redirect URI"
 
-    println("Here is some stuff you can do:")
+//    Client-Side (Implicit) Authentication
+//    Get a URL to call. This URL will return the TOKEN in the URI after the #-symbol (and you're done)..
+//    println(Authenticator.tokenURL(clientId, redirectURI))
+
+//    Server-side (Explicit) Flow
+//    Step 1: Get a URL to call. This URL will return the CODE to use in step 2 in the URI as a parameter code.
+//    println(Authenticator.codeURL(clientId, redirectURI)
+//    Step 2: Request a token for the code requested in step 1 (the code is valid one time only).
+//    This will return Either a Authentication object with access token and user information or a Meta object on failure.
+//    println(Authenticator.requestToken(clientId, clientSecret, redirectURI, code = "the code from step 1"))
+
+    // Put either Left("accessToken") or Right("clientId") with values from Instagram here.
+    // Note that not all features are available without an access token.
+    val instagram = new Instagram(accessTokenOrClientId = Left("Put access token here"))
+
+    println("Here is some stuff you can do (when you have a valid Access Token or Client Id):")
 
     println(s"Get basic information about a name: ${instagram.userInfo("12895238")}")
 

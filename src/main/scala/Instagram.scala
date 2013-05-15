@@ -1,8 +1,5 @@
-import java.net.SocketTimeoutException
-import net.liftweb.json.JsonParser.ParseException
+import net.liftweb.json.DefaultFormats
 import responses._
-import net.liftweb.json._
-import scalaj.http._
 
 class Instagram(accessTokenOrClientId: Either[String, String], timeOut: Int = 10000) {
   implicit val formats = DefaultFormats
@@ -12,45 +9,13 @@ class Instagram(accessTokenOrClientId: Either[String, String], timeOut: Int = 10
     case Right(clientId) => s"client_id=$clientId"
   }
 
-  case class Response[T](
-    data: Option[T],
-    pagination: Option[Pagination],
-    meta: Meta
-  )
-
-  /** Request JSON from Instagram and parse it to a Response.
-    *
-    * @param url        URL to call for a response from Instagrams API.
-    * @param extractor  Convert the data section to the corresponding case class.
-    * @tparam T         Type the data section should be parsed to.
-    * @return           Response with data if successful, pagination if it exists and always a meta section
-    *                   (which possibly contains error information).
-    */
-  private def jsonResponse[T](url: String, extractor: (JsonAST.JValue => T)): Response[T] = {
-    try {
-      try {
-        val jsonResponse = parse(Http(url).options(HttpOptions.connTimeout(timeOut), HttpOptions.readTimeout(timeOut)).asString)
-        Response(
-          Some(extractor((jsonResponse \ "data"))),
-          (jsonResponse \ "pagination").extract[Option[Pagination]],
-          (jsonResponse \ "meta").extract[Meta]
-        )
-      } catch {
-        case e: HttpException => Response(None, None, (parse(e.body) \ "meta").extract[Meta])
-        case e: SocketTimeoutException => Response(None, None, responses.Meta(Some("SocketTimeoutException"), -2, Some(s"Read timed out for URL: $url.")))
-      }
-    } catch {
-      case e: ParseException => Response(None, None, responses.Meta(Some("ParseException"), -1, Some(s"Unable to parse JSON response from Instagram for URL: $url.")))
-    }
-  }
-
   /** Get basic information about a name.
     *
     * @param userId Id-number of the name to get information about.
     * @return       Response.
     */
   def userInfo(userId: String): Response[Profile] = {
-    jsonResponse(s"https://api.instagram.com/v1/users/$userId/?$authentication", _.extract[Profile])
+    Request.getJson(s"https://api.instagram.com/v1/users/$userId/?$authentication", _.extract[Profile], timeOut)
   }
 
   /** Search for a name by name.
@@ -62,7 +27,7 @@ class Instagram(accessTokenOrClientId: Either[String, String], timeOut: Int = 10
     * @return       Response.
     */
   def userSearch(name: String, count: Option[Int] = None, minId: Option[String] = None, maxId:  Option[String] = None): Response[List[UserSearch]] = {
-    jsonResponse(s"https://api.instagram.com/v1/users/search?$authentication&q=$name&count=${count.mkString}&min_id=${minId.mkString}&max_id=${maxId.mkString}", _.extract[List[UserSearch]])
+    Request.getJson(s"https://api.instagram.com/v1/users/search?$authentication&q=$name&count=${count.mkString}&min_id=${minId.mkString}&max_id=${maxId.mkString}", _.extract[List[UserSearch]], timeOut)
   }
 
   /** Get the list of users this user follows.
@@ -71,7 +36,7 @@ class Instagram(accessTokenOrClientId: Either[String, String], timeOut: Int = 10
     * @return       Response.
     */
   def follows(userId: String): Response[List[User]] = {
-    jsonResponse(s"https://api.instagram.com/v1/users/$userId/follows?$authentication", _.extract[List[User]])
+    Request.getJson(s"https://api.instagram.com/v1/users/$userId/follows?$authentication", _.extract[List[User]], timeOut)
   }
 
   /** Get the list of users this user is followed by.
@@ -80,7 +45,7 @@ class Instagram(accessTokenOrClientId: Either[String, String], timeOut: Int = 10
     * @return       Response.
     */
   def followedBy(userId: String): Response[List[User]] = {
-    jsonResponse(s"https://api.instagram.com/v1/users/$userId/followed-by?$authentication", _.extract[List[User]])
+    Request.getJson(s"https://api.instagram.com/v1/users/$userId/followed-by?$authentication", _.extract[List[User]], timeOut)
   }
 
   /** See the authenticated user's feed.
@@ -91,7 +56,7 @@ class Instagram(accessTokenOrClientId: Either[String, String], timeOut: Int = 10
     * @return       Response.
     */
   def feed(count: Option[Int] = None, minId: Option[String] = None, maxId:  Option[String] = None): Response[List[Media]] = {
-    jsonResponse(s"https://api.instagram.com/v1/users/self/feed?$authentication&count=${count.mkString}&min_id=${minId.mkString}&max_id=${maxId.mkString}", _.extract[List[Media]])
+    Request.getJson(s"https://api.instagram.com/v1/users/self/feed?$authentication&count=${count.mkString}&min_id=${minId.mkString}&max_id=${maxId.mkString}", _.extract[List[Media]], timeOut)
   }
 
   /** Get the most recent media published by a user.
@@ -104,7 +69,7 @@ class Instagram(accessTokenOrClientId: Either[String, String], timeOut: Int = 10
     * @return             Response.
     */
   def mediaRecent(userId: String, count: Option[Int] = None, minTimestamp: Option[String] = None, maxTimestamp: Option[String] = None, minId: Option[String] = None, maxId: Option[String] = None): Response[List[Media]] = {
-    jsonResponse(s"https://api.instagram.com/v1/users/${userId}/media/recent/?$authentication&max_timestamp=${maxTimestamp.mkString}&min_timestamp=${minTimestamp.mkString}&min_id=${minId.mkString}&max_id=${maxId.mkString}", _.extract[List[Media]])
+    Request.getJson(s"https://api.instagram.com/v1/users/$userId/media/recent/?$authentication&max_timestamp=${maxTimestamp.mkString}&min_timestamp=${minTimestamp.mkString}&min_id=${minId.mkString}&max_id=${maxId.mkString}", _.extract[List[Media]], timeOut)
   }
 
   /** See the authenticated user's list of liked media.
@@ -114,7 +79,7 @@ class Instagram(accessTokenOrClientId: Either[String, String], timeOut: Int = 10
     * @return           Response.
     */
   def liked(count: Option[Int] = None, maxLikeId: Option[String] = None): Response[List[Media]] = {
-    jsonResponse(s"https://api.instagram.com/v1/users/self/media/liked?$authentication&count=${count.mkString}&max_like_id=${maxLikeId.mkString}", _.extract[List[Media]])
+    Request.getJson(s"https://api.instagram.com/v1/users/self/media/liked?$authentication&count=${count.mkString}&max_like_id=${maxLikeId.mkString}", _.extract[List[Media]], timeOut)
   }
 
   /** Get information about a media object.
@@ -123,7 +88,7 @@ class Instagram(accessTokenOrClientId: Either[String, String], timeOut: Int = 10
     * @return         Response.
     */
   def media(mediaId: String): Response[Media] = {
-    jsonResponse(s"https://api.instagram.com/v1/media/$mediaId?$authentication", _.extract[Media])
+    Request.getJson(s"https://api.instagram.com/v1/media/$mediaId?$authentication", _.extract[Media], timeOut)
   }
 
   /** Get a list of currently popular media.
@@ -131,7 +96,7 @@ class Instagram(accessTokenOrClientId: Either[String, String], timeOut: Int = 10
     * @return Response.
     */
   def popular: Response[List[Media]] = {
-    jsonResponse(s"https://api.instagram.com/v1/media/popular?$authentication", _.extract[List[Media]])
+    Request.getJson(s"https://api.instagram.com/v1/media/popular?$authentication", _.extract[List[Media]], timeOut)
   }
 
   /** Get a full list of comments on a media.
@@ -140,7 +105,7 @@ class Instagram(accessTokenOrClientId: Either[String, String], timeOut: Int = 10
     * @return         Response.
     */
   def comments(mediaId: String): Response[List[Comment]] = {
-    jsonResponse(s"https://api.instagram.com/v1/media/$mediaId/comments?$authentication", _.extract[List[Comment]])
+    Request.getJson(s"https://api.instagram.com/v1/media/$mediaId/comments?$authentication", _.extract[List[Comment]], timeOut)
   }
 
   /** Get a list of users who have liked this media.
@@ -149,7 +114,7 @@ class Instagram(accessTokenOrClientId: Either[String, String], timeOut: Int = 10
     * @return         Response.
     */
   def likes(mediaId: String): Response[List[User]] = {
-    jsonResponse(s"https://api.instagram.com/v1/media/$mediaId/likes?$authentication", _.extract[List[User]])
+    Request.getJson(s"https://api.instagram.com/v1/media/$mediaId/likes?$authentication", _.extract[List[User]], timeOut)
   }
 
   /** Get information about a tag object.
@@ -158,7 +123,7 @@ class Instagram(accessTokenOrClientId: Either[String, String], timeOut: Int = 10
     * @return     Response.
     */
   def tagInformation(tag: String): Response[Tag] = {
-    jsonResponse(s"https://api.instagram.com/v1/tags/$tag?$authentication", _.extract[Tag])
+    Request.getJson(s"https://api.instagram.com/v1/tags/$tag?$authentication", _.extract[Tag], timeOut)
   }
 
   /** Get information about a tag object.
@@ -167,7 +132,7 @@ class Instagram(accessTokenOrClientId: Either[String, String], timeOut: Int = 10
     * @return     Response.
     */
   def tagSearch(tag: String): Response[List[Tag]] = {
-    jsonResponse(s"https://api.instagram.com/v1/tags/search?q=$tag&$authentication", _.extract[List[Tag]])
+    Request.getJson(s"https://api.instagram.com/v1/tags/search?q=$tag&$authentication", _.extract[List[Tag]], timeOut)
   }
 
   /** Get a list of recently tagged media.
@@ -178,7 +143,7 @@ class Instagram(accessTokenOrClientId: Either[String, String], timeOut: Int = 10
     * @return         Response.
     */
   def tagRecent(tag: String, minTagId: Option[String] = None, maxTagId: Option[String] = None): Response[List[Media]] = {
-    jsonResponse(s"https://api.instagram.com/v1/tags/$tag/media/recent?$authentication&min_tag_id=${minTagId.mkString}&max_tag_id=${maxTagId.mkString}", _.extract[List[Media]])
+    Request.getJson(s"https://api.instagram.com/v1/tags/$tag/media/recent?$authentication&min_tag_id=${minTagId.mkString}&max_tag_id=${maxTagId.mkString}", _.extract[List[Media]], timeOut)
   }
 
   /** Get information about a location.
@@ -187,7 +152,7 @@ class Instagram(accessTokenOrClientId: Either[String, String], timeOut: Int = 10
     * @return           Response.
     */
   def location(locationId: String): Response[Location] = {
-    jsonResponse(s"https://api.instagram.com/v1/locations/$locationId?$authentication", _.extract[Location])
+    Request.getJson(s"https://api.instagram.com/v1/locations/$locationId?$authentication", _.extract[Location], timeOut)
   }
 
   /** Get a list of media objects from a given location.
@@ -200,7 +165,7 @@ class Instagram(accessTokenOrClientId: Either[String, String], timeOut: Int = 10
     * @return             Response.
     */
   def locationMedia(locationId: String, minTimestamp: Option[String] = None, maxTimestamp: Option[String] = None, minId: Option[String] = None, maxId: Option[String] = None): Response[List[Media]] = {
-    jsonResponse(s"https://api.instagram.com/v1/locations/$locationId/media/recent?$authentication&min_timestamp=${minTimestamp.mkString}&max_timestamp=${maxTimestamp.mkString}&min_id=${minId.mkString}&max_id=${maxId.mkString}", _.extract[List[Media]])
+    Request.getJson(s"https://api.instagram.com/v1/locations/$locationId/media/recent?$authentication&min_timestamp=${minTimestamp.mkString}&max_timestamp=${maxTimestamp.mkString}&min_id=${minId.mkString}&max_id=${maxId.mkString}", _.extract[List[Media]], timeOut)
   }
 
   /** Search for a location by geographic coordinate.
@@ -215,7 +180,7 @@ class Instagram(accessTokenOrClientId: Either[String, String], timeOut: Int = 10
       if (coordinates.isDefined) s"&lat=${coordinates.get._1}&lng=${coordinates.get._2}"
       else ""
 
-    jsonResponse(s"https://api.instagram.com/v1/locations/search?$authentication&foursquare_v2_id=${foursquareV2Id.mkString}${latitudeLongitude}", _.extract[List[Location]])
+    Request.getJson(s"https://api.instagram.com/v1/locations/search?$authentication&foursquare_v2_id=${foursquareV2Id.mkString}$latitudeLongitude", _.extract[List[Location]], timeOut)
   }
 
 }
