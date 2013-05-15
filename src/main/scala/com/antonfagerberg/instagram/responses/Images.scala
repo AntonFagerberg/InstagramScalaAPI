@@ -1,4 +1,4 @@
-package responses
+package com.antonfagerberg.instagram.responses
 
 case class Images(
   low_resolution: Image,

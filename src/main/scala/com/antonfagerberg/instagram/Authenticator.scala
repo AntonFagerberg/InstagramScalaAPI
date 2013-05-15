@@ -1,8 +1,11 @@
+package com.antonfagerberg.instagram
+
 import java.net.SocketTimeoutException
-import responses.{Meta, Authentication}
 import net.liftweb.json._
 import net.liftweb.json.JsonParser.ParseException
 import scalaj.http.{HttpException, HttpOptions, Http}
+import com.antonfagerberg.instagram.responses.{Meta, Authentication}
+import net.liftweb.json.Meta
 
 object Authenticator {
   implicit val formats = DefaultFormats
@@ -44,11 +47,11 @@ object Authenticator {
         Left(jsonResponse.extract[Authentication])
       } catch {
         case e: HttpException => Right(parse(e.body).extract[Meta])
-        case e: SocketTimeoutException => Right(Meta(Some("SocketTimeoutException"), -2, Some(s"Read timed out for URL: $url.")))
+        case e: SocketTimeoutException => Right(responses.Meta(Some("SocketTimeoutException"), -2, Some(s"Read timed out for URL: $url.")))
       }
     } catch {
-      case e: ParseException => Right(Meta(Some("ParseException"), -1, Some(s"Unable to parse JSON response from Instagram for URL: $url.")))
-      case e: MappingException => Right(Meta(Some("MappingException"), -3, Some(s"Unable to map JSON response from Instagram for URL: $url.")))
+      case e: ParseException => Right(responses.Meta(Some("ParseException"), -1, Some(s"Unable to parse JSON response from com.antonfagerberg.instagram.Instagram for URL: $url.")))
+      case e: MappingException => Right(responses.Meta(Some("MappingException"), -3, Some(s"Unable to map JSON response from com.antonfagerberg.instagram.Instagram for URL: $url.")))
     }
   }
 }

@@ -1,5 +1,7 @@
+package com.antonfagerberg.instagram
+
 import net.liftweb.json.DefaultFormats
-import responses._
+import com.antonfagerberg.instagram.responses._
 
 class Instagram(accessTokenOrClientId: Either[String, String], timeOut: Int = 10000) {
   implicit val formats = DefaultFormats

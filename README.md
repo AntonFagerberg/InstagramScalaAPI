@@ -1,14 +1,14 @@
-# Instagram API written in Scala.
-This is an Scala implementation of the Instagram API. Most features are implemented. See list below for what is not yet implemented.
+# com.antonfagerberg.instagram.Instagram API written in Scala.
+This is an Scala implementation of the com.antonfagerberg.instagram.Instagram API. Most features are implemented. See list below for what is not yet implemented.
 
 This project uses scalaj-http to send HTTP-requests and lift-json to parse the JSON response as case classes.
 
-You need to register an application for Instagram and get a client id (and later an access token for full access) before you can use this API. First register on: http://instagram.com/developer to get the required variables - then use this API to receive an access token if you wish.
+You need to register an application for com.antonfagerberg.instagram.Instagram and get a client id (and later an access token for full access) before you can use this API. First register on: http://instagram.com/developer to get the required variables - then use this API to receive an access token if you wish.
 
-A Response object is returned from all methods and it contains:
+A com.antonfagerberg.instagram.responses.Response object is returned from all methods and it contains:
  * Data - the stuff you actually want. This is the JSON response parsed as a corresponding object.
  * Pagination - if a large result set is retrieved, this object contains what you need to fetch the next "page" with information. You can pass the relevant pieces of this information to the same method as called before as optional parameters.
- * Meta - contains the status from Instagram (like 200 OK, 400 error). Internal errors such as parsing or socket errors will be stored in this meta object as well.
+ * Meta - contains the status from com.antonfagerberg.instagram.Instagram (like 200 OK, 400 error). Internal errors such as parsing or socket errors will be stored in this meta object as well.
 
 ## Installation & Demo
 You can use SBT to download the required dependencies and run the Demo-file:
@@ -17,7 +17,7 @@ You can use SBT to download the required dependencies and run the Demo-file:
 sbt run
 ```
 
-The demo-file contains all implemented methods but you need to uncomment some of them to try them (to avoid spamming the Instagram servers). You need to get a client id (and optionally an access token) before running the examples.
+The demo-file contains all implemented methods but you need to uncomment some of them to try them (to avoid spamming the com.antonfagerberg.instagram.Instagram servers). You need to get a client id (and optionally an access token) before running the examples.
 
 ### Dependencies
 The current dependencies I use are:
@@ -64,7 +64,7 @@ The current dependencies I use are:
 
 ## Example usage
 ```Scala
-// You need to request these variables from Instagram: www.instagram.com/developer
+// You need to request these variables from com.antonfagerberg.instagram.Instagram: www.instagram.com/developer
 val clientId = "client-id"
 val clientSecret = "client-secret"
 val redirectURI = "redirect URI"
@@ -80,10 +80,10 @@ println(Authenticator.codeURL(clientId, redirectURI)
 // This will return Either a Authentication object with access token and user information or a Meta object on failure.
 println(Authenticator.requestToken(clientId, clientSecret, redirectURI, code = "the code from step 1"))
 
-// Put either Left("accessToken") or Right("clientId") with values from Instagram here.
+// Put either Left("accessToken") or Right("clientId") with values from com.antonfagerberg.instagram.Instagram here.
 // Note that not all features are available without an access token.
 
-val instagram = new Instagram(accessTokenOrClientId = Left("Put access token here"))
+val instagram = new com.antonfagerberg.instagram.Instagram(accessTokenOrClientId = Left("Put-access-token-here"))
 
 println("Here is some stuff you can do (when you have a valid Access Token or Client Id):")
 

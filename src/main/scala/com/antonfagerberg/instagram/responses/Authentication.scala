@@ -1,4 +1,4 @@
-package responses
+package com.antonfagerberg.instagram.responses
 
 case class Authentication(
   access_token: String,

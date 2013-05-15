@@ -1,9 +1,11 @@
+package com.antonfagerberg.instagram
+
 import java.net.SocketTimeoutException
 import net.liftweb.json._
 import net.liftweb.json.JsonParser.ParseException
-import responses.{Meta, Pagination}
 import scala.Some
 import scalaj.http.{HttpException, HttpOptions, Http}
+import com.antonfagerberg.instagram.responses.{Meta, Pagination, Response}
 
 object Request {
   implicit val formats = DefaultFormats
@@ -37,7 +39,7 @@ object Request {
     * @param jsonRequest  JSON request to send and parse response from to appropriate case class.
     * @param extractor    Convert the data section to the corresponding case class.
     * @tparam T           Type the data section should be parsed to.
-    * @return             Response with data if successful, pagination if it exists and always a meta section
+    * @return             com.antonfagerberg.instagram.responses.Response with data if successful, pagination if it exists and always a meta section
     *                     (which possibly contains error information).
     */
   private def json[T](jsonRequest: => JValue, extractor: (JValue => T), url: String): Response[T] = {

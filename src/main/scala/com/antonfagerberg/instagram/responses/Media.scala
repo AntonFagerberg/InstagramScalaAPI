@@ -1,4 +1,4 @@
-package responses
+package com.antonfagerberg.instagram.responses
 
 case class Media(
   users_in_photo: List[UserInPhoto],

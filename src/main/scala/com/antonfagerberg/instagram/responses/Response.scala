@@ -1,4 +1,4 @@
-import responses.{Meta, Pagination}
+package com.antonfagerberg.instagram.responses
 
 case class Response[T](
   data: Option[T],

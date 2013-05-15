@@ -1,6 +1,10 @@
+package com.antonfagerberg.instagram
+
+import scalaj.http.{HttpOptions, Http}
+
 object Demo {
   def main(args: Array[String]) {
-//    You need to request these variables from Instagram: www.instagram.com/developer
+//    You need to request these variables from com.antonfagerberg.instagram.Instagram: www.instagram.com/developer
 //    val clientId = "client-id"
 //    val clientSecret = "client-secret"
 //    val redirectURI = "redirect URI"
@@ -16,9 +20,9 @@ object Demo {
 //    This will return Either a Authentication object with access token and user information or a Meta object on failure.
 //    println(Authenticator.requestToken(clientId, clientSecret, redirectURI, code = "the code from step 1"))
 
-    // Put either Left("accessToken") or Right("clientId") with values from Instagram here.
+    // Put either Left("accessToken") or Right("clientId") with values from com.antonfagerberg.instagram.Instagram here.
     // Note that not all features are available without an access token.
-    val instagram = new Instagram(accessTokenOrClientId = Left("Put access token here"))
+    val instagram = new Instagram(accessTokenOrClientId = Left("Put-access-token-here"))
 
     println("Here is some stuff you can do (when you have a valid Access Token or Client Id):")
 
