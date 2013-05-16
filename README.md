@@ -61,14 +61,14 @@ The current dependencies I use are:
  * OAuth 2.0 authentication.
  * Get information about a relationship to another user.
  * Modify the relationship with target user.
+ * List the users who have requested to follow.
+ * Set a like on this media by the current user.
+ * Remove a like on this media by the current user.
 
 ### Not yet implemented
- * List the users who have requested to follow.
  * Search for media in a given area. The default time span is set to 5 days. The time span must not exceed 7 days. Defaults time stamps cover the last 5 days.
  * Create a comment on a media. Please email apidevelopers[at]instagram.com for access.
  * Remove a comment.
- * Set a like on this media by the current user.
- * Remove a like on this media by the current user.
  * Get recent media from a geography subscription.
 
 ## Example usage
@@ -76,7 +76,7 @@ The current dependencies I use are:
 //    You need to request these variables from Instagram: www.instagram.com/developer
 //    val clientId = "client-id"
 //    val clientSecret = "client-secret"
-//    val redirectURI = "redirect URI"
+//    val redirectURI = "redirect-URI"
 
 //    Client-Side (Implicit) Authentication
 //    Get a URL to call. This URL will return the TOKEN in the URI after the #-symbol (and you're done)..
@@ -89,7 +89,7 @@ The current dependencies I use are:
 //    You can append scopes by doing println(Authenticator.codeURL(clientId, redirectURI, comments = true, relationships = true, likes = true))
 //    Step 2: Request a token for the code requested in step 1 (the code is valid one time only).
 //    This will return Either a Authentication object with access token and user information or a Meta object on failure.
-//    println(Authenticator.requestToken(clientId, clientSecret, redirectURI, code = "the code from step 1"))
+//    println(Authenticator.requestToken(clientId, clientSecret, redirectURI, code = "the-code-from-step-1"))
 
 //    Put either Left("accessToken") or Right("clientId") with values from com.antonfagerberg.instagram.Instagram here.
 //    Note that not all features are available without an access token.
@@ -131,6 +131,26 @@ println(s"Get a list of currently popular media: ${instagram.popular}")
 //    println(s"Get a list of media objects from a given location: ${instagram.locationMedia("1")}")
 
 //    println(s"Search for a location by geographic coordinate: ${instagram.locationSearch(Some("48.858844" -> "2.294351"))}")
+
+println(s"Like an image: ${instagram.like("457326401520123505_12895238")}")
+
+//    println(s"Unlike an image: ${instagram.unlike("457326401520123505_12895238")}")
+
+//    println(s"Relationship to a user: ${instagram.relationship("12895238")}")
+
+//    println(s"Follow a user: ${instagram.relationshipFollow("12895238")}")
+
+//    println(s"Unfollow a user: ${instagram.relationshipUnfollow("12895238")}")
+
+//    println(s"Block a user: ${instagram.relationshipBlock("12895238")}")
+
+//    println(s"Unblock a user: ${instagram.relationshipUnblock("12895238")}")
+
+//    println(s"Approve a user: ${instagram.relationshipApprove("12895238")}")
+
+//    println(s"Deny a user: ${instagram.relationshipDeny("12895238")}")
+
+//    println(s"Relationship requests: ${instagram.relationshipRequests}")
 ```
 
 ## License

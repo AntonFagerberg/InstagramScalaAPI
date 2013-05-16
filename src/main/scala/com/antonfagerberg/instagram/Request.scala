@@ -18,7 +18,7 @@ object Request {
     * @tparam T         Type the data section should be parsed to.
     * @return
     */
-  def getJson[T](url: String, extractor: (JsonAST.JValue => T), timeOut: Int = 10000): Response[T] = {
+  def getJson[T](url: String, extractor: (JsonAST.JValue => Option[T]), timeOut: Int = 10000): Response[T] = {
     json(parse(Http(url).options(HttpOptions.connTimeout(timeOut), HttpOptions.readTimeout(timeOut)).asString), extractor, url)
   }
 
@@ -30,7 +30,7 @@ object Request {
     * @tparam T         Type the data section should be parsed to.
     * @return
     */
-  def postJson[T](url: String, extractor: (JsonAST.JValue => T), parameters: List[(String, String)], timeOut: Int = 10000): Response[T] = {
+  def postJson[T](url: String, extractor: (JsonAST.JValue => Option[T]), parameters: List[(String, String)], timeOut: Int = 10000): Response[T] = {
     json(parse(Http.post(url).params(parameters).options(HttpOptions.connTimeout(timeOut), HttpOptions.readTimeout(timeOut)).asString), extractor, url)
   }
 
@@ -42,13 +42,13 @@ object Request {
     * @return             com.antonfagerberg.instagram.responses.Response with data if successful, pagination if it exists and always a meta section
     *                     (which possibly contains error information).
     */
-  private def json[T](jsonRequest: => JValue, extractor: (JValue => T), url: String): Response[T] = {
+  private def json[T](jsonRequest: => JValue, extractor: (JValue => Option[T]), url: String): Response[T] = {
     try {
       try {
         val jsonResponse = jsonRequest
 
         Response(
-          Some(extractor((jsonResponse \ "data"))),
+          extractor((jsonResponse \ "data")),
           (jsonResponse \ "pagination").extract[Option[Pagination]],
           (jsonResponse \ "meta").extract[Meta]
         )
