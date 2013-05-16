@@ -83,6 +83,8 @@ object Demo {
 
 //    println(s"Relationship requests: ${instagram.relationshipRequests}")
 
+//    println(instagram.comment("media-id", "test! :D"))
+
 //    println(instagram.commentDelete("media-id", "comment-id"))
 
     println(s"Search for images near a coordinate: ${instagram.mediaSearch("48.858844" -> "2.294351")}")

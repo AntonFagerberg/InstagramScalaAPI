@@ -280,7 +280,7 @@ class Instagram(accessTokenOrClientId: Either[String, String], timeOut: Int = 10
     Request.getJson(s"https://api.instagram.com/v1/users/self/requested-by?$authentication", (json => Some(json.extract[List[User]])), timeOut)
   }
 
-  /** Like a media object.
+  /** Set a like on this media by the currently authenticated user.
     *
     * @param mediaId  Id of media object.
     * @return         Response.
@@ -289,7 +289,7 @@ class Instagram(accessTokenOrClientId: Either[String, String], timeOut: Int = 10
     Request.postJson(s"https://api.instagram.com/v1/media/$mediaId/likes?$authentication", (json => None), Nil, timeOut)
   }
 
-  /** Unlike a media object.
+  /** Remove a like on this media by the currently authenticated user.
     *
     * @param mediaId  Id of media object.
     * @return         Response.
@@ -298,7 +298,7 @@ class Instagram(accessTokenOrClientId: Either[String, String], timeOut: Int = 10
     Request.postJson(s"https://api.instagram.com/v1/media/$mediaId/likes?$authentication", (json => None), List("_method" -> "DELETE"), timeOut)
   }
 
-  /** Delete a comment.
+  /**  Remove a comment either on the authenticated user's media or authored by the authenticated user.
     *
     * @param mediaId    Id of media object.
     * @param commentId  Id of comment.
@@ -306,5 +306,16 @@ class Instagram(accessTokenOrClientId: Either[String, String], timeOut: Int = 10
     */
   def commentDelete(mediaId: String, commentId: String): Response[NoData] = {
     Request.postJson(s"https://api.instagram.com/v1/media/$mediaId/comments/$commentId/?$authentication", (json => None), List("_method" -> "DELETE"), timeOut)
+  }
+
+  /** Create a comment on a media.
+    * Please email apidevelopers[at]instagram.com or visit http://bit.ly/instacomments for access.
+    *
+    * @param mediaId  Id of media object.
+    * @param comment  Comment text.
+    * @return         Response.
+    */
+  def comment(mediaId: String, comment: String): Response[NoData] = {
+    Request.postJson(s"https://api.instagram.com/v1/media/$mediaId/comments?$authentication", (json => None), List("text" -> comment), timeOut)
   }
 }

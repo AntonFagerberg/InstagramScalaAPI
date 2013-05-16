@@ -66,9 +66,9 @@ The current dependencies I use are:
  * Remove a like on this media by the current user.
  * Remove a comment.
  * Search for media in a given area. The default time span is set to 5 days. The time span must not exceed 7 days. Defaults time stamps cover the last 5 days.
+ * Create a comment on a media. Please email apidevelopers[at]instagram.com for access.
 
 ### Not yet implemented
- * Create a comment on a media. Please email apidevelopers[at]instagram.com for access.
  * Get recent media from a geography subscription.
 
 ## Example usage
@@ -151,6 +151,8 @@ println(s"Like an image: ${instagram.like("457326401520123505_12895238")}")
 //    println(s"Deny a user: ${instagram.relationshipDeny("12895238")}")
 
 //    println(s"Relationship requests: ${instagram.relationshipRequests}")
+
+//    println(instagram.comment("media-id", "test! :D"))
 
 //    println(instagram.commentDelete("media-id", "comment-id"))
 
