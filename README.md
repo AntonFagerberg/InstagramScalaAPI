@@ -69,7 +69,7 @@ The current dependencies I use are:
  * Create a comment on a media. Please email apidevelopers[at]instagram.com for access.
 
 ### Not yet implemented
- * Get recent media from a geography subscription.
+ * Subscriptions.
 
 ## Example usage
 ```Scala
@@ -102,59 +102,59 @@ println(s"Get basic information about a name: ${instagram.userInfo("12895238")}"
 
 println(s"Search for a name by name: ${instagram.userSearch("AntonFagerberg")}")
 
-//    println(s"Get the list of users this user follows: ${instagram.follows("12895238")}")
+println(s"Get the list of users this user follows: ${instagram.follows("12895238")}")
 
-//    println(s"Get the list of users this user is followed by: ${instagram.followedBy("12895238")}")
+println(s"Get the list of users this user is followed by: ${instagram.followedBy("12895238")}")
 
 println(s"See the authenticated user's feed: ${instagram.feed()}")
 
-//    println(s"Get the most recent media published by a user: ${instagram.mediaRecent("12895238")}")
+println(s"Get the most recent media published by a user: ${instagram.mediaRecent("12895238")}")
 
-//    println(s"See the authenticated user's list of liked media: ${instagram.liked()}")
+println(s"See the authenticated user's list of liked media: ${instagram.liked()}")
 
 println(s"Get information about a media object: ${instagram.media("452194471682227494_12895238")}")
 
 println(s"Get a list of currently popular media: ${instagram.popular}")
 
-//    println(s"Get a full list of comments on a media: ${instagram.comments("452194471682227494_12895238")}")
+println(s"Get a full list of comments on a media: ${instagram.comments("452194471682227494_12895238")}")
 
-//    println(s"Get a list of users who have liked this media: ${instagram.likes("452194471682227494_12895238")}")
+println(s"Get a list of users who have liked this media: ${instagram.likes("452194471682227494_12895238")}")
 
-//    println(s"Get information about a tag object: ${instagram.tagInformation("hipster")}")
+println(s"Get information about a tag object: ${instagram.tagInformation("hipster")}")
 
-//    println(s"Get information about a tag object: ${instagram.tagSearch("snowy")}")
+println(s"Get information about a tag object: ${instagram.tagSearch("snowy")}")
 
-//    println(s"Get a list of recently tagged media: ${instagram.tagRecent("beer")}")
+println(s"Get a list of recently tagged media: ${instagram.tagRecent("beer")}")
 
-//    println(s"Get information about a location: ${instagram.location("1")}")
+println(s"Get information about a location: ${instagram.location("1")}")
 
-//    println(s"Get a list of media objects from a given location: ${instagram.locationMedia("1")}")
+println(s"Get a list of media objects from a given location: ${instagram.locationMedia("1")}")
 
-//    println(s"Search for a location by geographic coordinate: ${instagram.locationSearch(Some("48.858844" -> "2.294351"))}")
+println(s"Search for a location by geographic coordinate: ${instagram.locationSearch(Some("48.858844" -> "2.294351"))}")
 
 println(s"Like an image: ${instagram.like("457326401520123505_12895238")}")
 
-//    println(s"Unlike an image: ${instagram.unlike("457326401520123505_12895238")}")
+println(s"Unlike an image: ${instagram.unlike("457326401520123505_12895238")}")
 
-//    println(s"Relationship to a user: ${instagram.relationship("12895238")}")
+println(s"Relationship to a user: ${instagram.relationship("12895238")}")
 
-//    println(s"Follow a user: ${instagram.relationshipFollow("12895238")}")
+println(s"Follow a user: ${instagram.relationshipFollow("12895238")}")
 
-//    println(s"Unfollow a user: ${instagram.relationshipUnfollow("12895238")}")
+println(s"Unfollow a user: ${instagram.relationshipUnfollow("12895238")}")
 
-//    println(s"Block a user: ${instagram.relationshipBlock("12895238")}")
+println(s"Block a user: ${instagram.relationshipBlock("12895238")}")
 
-//    println(s"Unblock a user: ${instagram.relationshipUnblock("12895238")}")
+println(s"Unblock a user: ${instagram.relationshipUnblock("12895238")}")
 
-//    println(s"Approve a user: ${instagram.relationshipApprove("12895238")}")
+println(s"Approve a user: ${instagram.relationshipApprove("12895238")}")
 
-//    println(s"Deny a user: ${instagram.relationshipDeny("12895238")}")
+println(s"Deny a user: ${instagram.relationshipDeny("12895238")}")
 
-//    println(s"Relationship requests: ${instagram.relationshipRequests}")
+println(s"Relationship requests: ${instagram.relationshipRequests}")
 
-//    println(instagram.comment("media-id", "test! :D"))
+println(instagram.comment("media-id", "test! :D"))
 
-//    println(instagram.commentDelete("media-id", "comment-id"))
+println(instagram.commentDelete("media-id", "comment-id"))
 
 println(s"Search for images near a coordinate: ${instagram.mediaSearch("48.858844" -> "2.294351")}")
 ```
