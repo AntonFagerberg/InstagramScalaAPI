@@ -82,5 +82,7 @@ object Demo {
 //    println(s"Deny a user: ${instagram.relationshipDeny("12895238")}")
 
 //    println(s"Relationship requests: ${instagram.relationshipRequests}")
+
+//    println(instagram.commentDelete("media-id", "comment-id"))
   }
 }

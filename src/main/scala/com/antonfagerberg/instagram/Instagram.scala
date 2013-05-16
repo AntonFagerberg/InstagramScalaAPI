@@ -273,7 +273,7 @@ class Instagram(accessTokenOrClientId: Either[String, String], timeOut: Int = 10
     * @return         Response.
     */
   def like(mediaId: String): Response[NoData] = {
-    Request.postJson(s"https://api.instagram.com/v1/media/${mediaId}/likes?$authentication", (json => None), Nil, timeOut)
+    Request.postJson(s"https://api.instagram.com/v1/media/$mediaId/likes?$authentication", (json => None), Nil, timeOut)
   }
 
   /** Unlike a media object.
@@ -282,6 +282,16 @@ class Instagram(accessTokenOrClientId: Either[String, String], timeOut: Int = 10
     * @return         Response.
     */
   def unlike(mediaId: String): Response[NoData] = {
-    Request.postJson(s"https://api.instagram.com/v1/media/${mediaId}/likes?$authentication", (json => None), List("_method" -> "DELETE"), timeOut)
+    Request.postJson(s"https://api.instagram.com/v1/media/$mediaId/likes?$authentication", (json => None), List("_method" -> "DELETE"), timeOut)
+  }
+
+  /** Delete a comment.
+    *
+    * @param mediaId    Id of media object.
+    * @param commentId  Id of comment.
+    * @return           Response.
+    */
+  def commentDelete(mediaId: String, commentId: String): Response[NoData] = {
+    Request.postJson(s"https://api.instagram.com/v1/media/$mediaId/comments/$commentId/?$authentication", (json => None), List("_method" -> "DELETE"), timeOut)
   }
 }

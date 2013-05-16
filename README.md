@@ -1,5 +1,5 @@
 # Instagram API written in Scala.
-This is an Scala implementation of the Instagram API. Most features are implemented. See list below for what is not yet implemented.
+This is an Scala implementation of the Instagram API.
 
 This project uses scalaj-http to send HTTP-requests and lift-json to parse the JSON response as case classes.
 
@@ -64,11 +64,11 @@ The current dependencies I use are:
  * List the users who have requested to follow.
  * Set a like on this media by the current user.
  * Remove a like on this media by the current user.
+ * Remove a comment.
 
 ### Not yet implemented
  * Search for media in a given area. The default time span is set to 5 days. The time span must not exceed 7 days. Defaults time stamps cover the last 5 days.
  * Create a comment on a media. Please email apidevelopers[at]instagram.com for access.
- * Remove a comment.
  * Get recent media from a geography subscription.
 
 ## Example usage
@@ -151,6 +151,8 @@ println(s"Like an image: ${instagram.like("457326401520123505_12895238")}")
 //    println(s"Deny a user: ${instagram.relationshipDeny("12895238")}")
 
 //    println(s"Relationship requests: ${instagram.relationshipRequests}")
+
+//    println(instagram.commentDelete("media-id", "comment-id"))
 ```
 
 ## License
