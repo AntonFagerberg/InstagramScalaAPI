@@ -74,6 +74,19 @@ class Instagram(accessTokenOrClientId: Either[String, String], timeOut: Int = 10
     Request.getJson(s"https://api.instagram.com/v1/users/$userId/media/recent/?$authentication&max_timestamp=${maxTimestamp.mkString}&min_timestamp=${minTimestamp.mkString}&min_id=${minId.mkString}&max_id=${maxId.mkString}", (json => Some(json.extract[List[Media]])), timeOut)
   }
 
+  /** Search for media in a given area.
+    * The default time span is set to 5 days. The time span must not exceed 7 days. Defaults time stamps cover the last 5 days.
+    *
+    * @param coordinates  Latitude & Longitude coordinates.
+    * @param minTimestamp Return media after this UNIX timestamp.
+    * @param maxTimestamp Return media before this UNIX timestamp.
+    * @param distance     Default is 1000m (distance=1000), max distance is 5000.
+    * @return             Response.
+    */
+  def mediaSearch(coordinates: (String, String), minTimestamp: Option[String] = None, maxTimestamp: Option[String] = None, distance: Option[Int] = None): Response[List[Media]] = {
+    Request.getJson(s"https://api.instagram.com/v1/media/search?$authentication&lat=${coordinates._1}&lng=${coordinates._2}&min_timestamp=${minTimestamp.getOrElse("")}&max_timestamp=${maxTimestamp.getOrElse("")}&distance=${distance.getOrElse("")}", (json => Some(json.extract[List[Media]])), timeOut)
+  }
+
   /** See the authenticated user's list of liked media.
     *
     * @param count      Max number of results to return.
