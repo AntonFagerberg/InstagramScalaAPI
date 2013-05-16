@@ -74,22 +74,22 @@ The current dependencies I use are:
 ## Example usage
 ```Scala
 //    You need to request these variables from Instagram: www.instagram.com/developer
-//    val clientId = "client-id"
-//    val clientSecret = "client-secret"
-//    val redirectURI = "redirect-URI"
+val clientId = "client-id"
+val clientSecret = "client-secret"
+val redirectURI = "redirect-URI"
 
 //    Client-Side (Implicit) Authentication
 //    Get a URL to call. This URL will return the TOKEN in the URI after the #-symbol (and you're done)..
-//    println(Authenticator.tokenURL(clientId, redirectURI))
+println(Authenticator.tokenURL(clientId, redirectURI))
 //    You can append scopes by doing println(Authenticator.tokenURL(clientId, redirectURI, comments = true, relationships = true, likes = true))
 
 //    Server-side (Explicit) Flow
 //    Step 1: Get a URL to call. This URL will return the CODE to use in step 2 in the URI as a parameter code.
-//    println(Authenticator.codeURL(clientId, redirectURI))
+println(Authenticator.codeURL(clientId, redirectURI))
 //    You can append scopes by doing println(Authenticator.codeURL(clientId, redirectURI, comments = true, relationships = true, likes = true))
 //    Step 2: Request a token for the code requested in step 1 (the code is valid one time only).
 //    This will return Either a Authentication object with access token and user information or a Meta object on failure.
-//    println(Authenticator.requestToken(clientId, clientSecret, redirectURI, code = "the-code-from-step-1"))
+println(Authenticator.requestToken(clientId, clientSecret, redirectURI, code = "the-code-from-step-1"))
 
 //    Put either Left("accessToken") or Right("clientId") with values from com.antonfagerberg.instagram.Instagram here.
 //    Note that not all features are available without an access token.
