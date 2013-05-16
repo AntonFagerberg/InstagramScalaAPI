@@ -59,11 +59,11 @@ The current dependencies I use are:
  * Client ID support.
  * Pagination.
  * OAuth 2.0 authentication.
+ * Get information about a relationship to another user.
+ * Modify the relationship with target user.
 
 ### Not yet implemented
  * List the users who have requested to follow.
- * Get information about a relationship to another user.
- * Modify the relationship with target user.
  * Search for media in a given area. The default time span is set to 5 days. The time span must not exceed 7 days. Defaults time stamps cover the last 5 days.
  * Create a comment on a media. Please email apidevelopers[at]instagram.com for access.
  * Remove a comment.

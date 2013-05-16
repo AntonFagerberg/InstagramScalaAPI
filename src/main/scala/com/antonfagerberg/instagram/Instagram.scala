@@ -185,4 +185,77 @@ class Instagram(accessTokenOrClientId: Either[String, String], timeOut: Int = 10
     Request.getJson(s"https://api.instagram.com/v1/locations/search?$authentication&foursquare_v2_id=${foursquareV2Id.mkString}$latitudeLongitude", _.extract[List[Location]], timeOut)
   }
 
+  /** Get information about a relationship to another user.
+    *
+    * @param userId Id-number of user.
+    * @return       Response.
+    */
+  def relationship(userId: String): Response[Relationship] = {
+    Request.getJson(s"https://api.instagram.com/v1/users/$userId/relationship?$authentication", _.extract[Relationship], timeOut)
+  }
+
+  /** Send the request to update the relationship status.
+    * This method is called from the methods named relationshipXXX.
+    *
+    * @param userId Id of user to follow.
+    * @param action Action (follow/unfollow/block/unblock/approve/deny).
+    * @return       Response.
+    */
+  private def updateRelationship(userId: String, action: String): Response[RelationshipUpdate] = {
+    Request.postJson(s"https://api.instagram.com/v1/users/$userId/relationship?$authentication", _.extract[RelationshipUpdate], List("action" -> action), timeOut)
+  }
+
+  /** Follow a user.
+    *
+    * @param userId Id of user to follow.
+    * @return       Response.
+    */
+  def relationshipFollow(userId: String): Response[RelationshipUpdate] = {
+    updateRelationship(userId, "follow")
+  }
+
+  /** Unfollow a user.
+    *
+    * @param userId Id of user to unfollow.
+    * @return       Response.
+    */
+  def relationshipUnfollow(userId: String): Response[RelationshipUpdate] = {
+    updateRelationship(userId, "unfollow")
+  }
+
+  /** Block a user.
+    *
+    * @param userId Id of user to block.
+    * @return       Response.
+    */
+  def relationshipBlock(userId: String): Response[RelationshipUpdate] = {
+    updateRelationship(userId, "block")
+  }
+
+  /** Unblock a user.
+    *
+    * @param userId Id of user to follow.
+    * @return       Response.
+    */
+  def relationshipUnblock(userId: String): Response[RelationshipUpdate] = {
+    updateRelationship(userId, "unblock")
+  }
+
+  /** Approve a follow request from a user.
+    *
+    * @param userId Id of user to follow.
+    * @return       Response.
+    */
+  def relationshipApprove(userId: String): Response[RelationshipUpdate] = {
+    updateRelationship(userId, "approve")
+  }
+
+  /** Deny a follow request from a user.
+    *
+    * @param userId Id of user to follow.
+    * @return       Response.
+    */
+  def relationshipDeny(userId: String): Response[RelationshipUpdate] = {
+    updateRelationship(userId, "deny")
+  }
 }
