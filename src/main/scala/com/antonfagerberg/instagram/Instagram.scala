@@ -20,7 +20,7 @@ class Instagram(accessTokenOrClientId: Either[String, String], timeOut: Int = 10
     Request.getJson(s"https://api.instagram.com/v1/users/$userId/?$authentication", (json => Some(json.extract[Profile])), timeOut)
   }
 
-  /** Search for a name by name.
+  /** Search for a user by name.
     *
     * @param name   Name of user.
     * @param count  Max number of results to return.
