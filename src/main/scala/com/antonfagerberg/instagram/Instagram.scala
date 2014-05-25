@@ -263,13 +263,13 @@ class Instagram(accessTokenOrClientId: Either[String, String], timeOut: Int = 10
     updateRelationship(userId, "approve")
   }
 
-  /** Deny a follow request from a user.
+  /** Ignore a follow request from a user.
     *
     * @param userId Id of user to follow.
     * @return       Response.
     */
-  def relationshipDeny(userId: String): Response[NoData] = {
-    updateRelationship(userId, "deny")
+  def relationshipIgnore(userId: String): Response[NoData] = {
+    updateRelationship(userId, "ignore")
   }
 
   /** View users who has sent a follow request.
