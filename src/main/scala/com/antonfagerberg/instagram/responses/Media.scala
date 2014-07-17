@@ -1,6 +1,7 @@
 package com.antonfagerberg.instagram.responses
 
 case class Media(
+  `type`: String,
   users_in_photo: List[UserInPhoto],
   filter: String,
   tags: List[String],
