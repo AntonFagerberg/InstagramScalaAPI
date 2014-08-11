@@ -12,6 +12,7 @@ case class Media(
   user: UserSearch,
   created_time: String,
   images: Images,
+  videos: Option[Videos],
   id: String,
   location: Option[Location]
 ) {
