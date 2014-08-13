@@ -1,11 +1,9 @@
 package com.antonfagerberg.instagram
 
-import java.net.SocketTimeoutException
+import com.antonfagerberg.instagram.responses.{Authentication, Meta}
 import net.liftweb.json._
-import net.liftweb.json.JsonParser.ParseException
-import scalaj.http.{HttpException, HttpOptions, Http}
-import com.antonfagerberg.instagram.responses.{Meta, Authentication}
-import net.liftweb.json.Meta
+import scala.util.Try
+import scalaj.http.{Http, HttpException, HttpOptions}
 
 object Authenticator {
   implicit val formats = DefaultFormats
@@ -48,19 +46,40 @@ object Authenticator {
     */
   def requestToken(clientId: String, clientSecret: String, redirectURI: String, code: String, timeOut: Int = 10000): Either[Authentication, Meta] = {
     val url = "https://api.instagram.com/oauth/access_token"
+    val response =
+      Try {
+        val jsonResponse = parse(
+          Http.post(url).params(
+            List(
+              "client_id" -> clientId,
+              "client_secret" -> clientSecret,
+              "redirect_uri" -> redirectURI,
+              "code" -> code,
+              "grant_type" -> "authorization_code"
+            )
+          ).options(
+            HttpOptions.connTimeout(timeOut),
+            HttpOptions.readTimeout(timeOut)).asString
+          )
 
-    try {
-      try {
-        val jsonResponse = parse(Http.post(url).params(List("client_id" -> clientId, "client_secret" -> clientSecret, "redirect_uri" -> redirectURI, "code" -> code, "grant_type" -> "authorization_code")).options(HttpOptions.connTimeout(timeOut), HttpOptions.readTimeout(timeOut)).asString)
         Left(jsonResponse.extract[Authentication])
-      } catch {
-        case e: HttpException => Right(parse(e.body).extract[Meta])
-        case e: SocketTimeoutException => Right(responses.Meta(Some("SocketTimeoutException"), -2, Some(s"Read timed out for URL: $url.")))
+      } recoverWith {
+        case e: HttpException => Try(
+          Right(
+            parse(e.body).extract[Meta]
+          )
+        )
+      } recover {
+        case e: Exception => Right(
+          responses.Meta(
+            Some(e.toString),
+            -1,
+            Some(e.getStackTrace.map(_.toString).mkString("\n"))
+          )
+        )
       }
-    } catch {
-      case e: ParseException => Right(responses.Meta(Some("ParseException"), -1, Some(s"Unable to parse JSON response from com.antonfagerberg.instagram.Instagram for URL: $url.")))
-      case e: MappingException => Right(responses.Meta(Some("MappingException"), -3, Some(s"Unable to map JSON response from com.antonfagerberg.instagram.Instagram for URL: $url.")))
-    }
+
+    response.get
   }
 
   /** Scope string which will be append to URL on demand.
