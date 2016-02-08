@@ -89,6 +89,6 @@ object Demo {
 
     // println(s"Search for images near a coordinate: ${instagram.mediaSearch("48.858844" -> "2.294351")}")
 
-    //println(s"Generic query: ${instagram.request[List[Media]]("https://api.instagram.com/v1/tags/beer/media/recent?access_token=<SOME SECRET TOKEN>&max_tag_id=1416518266674445")}")
+    //println(s"Generic query: ${instagram.request[List[responses.Media]]("https://api.instagram.com/v1/tags/beer/media/recent?access_token=<SOME SECRET TOKEN>&max_tag_id=1416518266674445")}")
   }
 }
