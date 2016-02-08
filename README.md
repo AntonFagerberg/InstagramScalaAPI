@@ -73,7 +73,7 @@ To create a Jar-file. However, you need to add the dependencies below to your pr
  * Subscriptions.
 
 ## Example usage
-```Scala
+```scala
 // You need to request these variables from Instagram: www.instagram.com/developer
 val clientId = "client-id"
 val clientSecret = "client-secret"
@@ -87,7 +87,7 @@ println(Authenticator.tokenURL(clientId, redirectURI))
 // Server-side (Explicit) Flow
 // Step 1: Get a URL to call. This URL will return the CODE to use in step 2 in the URI as a parameter code.
 println(Authenticator.codeURL(clientId, redirectURI))
-// You can append scopes by doing println(Authenticator.codeURL(clientId, redirectURI, comments = true, relationships = true, likes = true))
+// You can append scopes by doing println(Authenticator.codeURL(clientId, redirectURI, comments = true, relationships = true, likes = true))    
 // Step 2: Request a token for the code requested in step 1 (the code is valid one time only).
 // This will return Either a Authentication object with access token and user information or a Meta object on failure.
 println(Authenticator.requestToken(clientId, clientSecret, redirectURI, code = "the-code-from-step-1"))
@@ -158,6 +158,8 @@ val instagram = new Instagram(accessTokenOrClientId = Left("Put-access-token-her
 // println(instagram.commentDelete("media-id", "comment-id"))
 
 // println(s"Search for images near a coordinate: ${instagram.mediaSearch("48.858844" -> "2.294351")}")
+
+//println(s"Generic query: ${instagram.request[List[responses.Media]]("https://api.instagram.com/v1/tags/beer/media/recent?access_token=<SOME SECRET TOKEN>&max_tag_id=1416518266674445")}")
 ```
 
 ## License
